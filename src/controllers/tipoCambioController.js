@@ -1,21 +1,38 @@
 import sbsService from '../services/sbsService.js'
 
-const getExchangeRate = async (req, res) => {
+const getExchangeRate = async (req, res, next) => {
+    const token = req.token; 
     const { body } = req;
-    
-    if(!body.fecha){
-        return;
+
+    if(!req.body.fecha){
+        const error = new Error("Parameter 'fecha' can not be empty");
+        error.statusCode = 400;
+        error.code = 'missing_parameter';
+        return next(error);
     }
 
     const date = {fecha: body.fecha}
 
-    const tipoCambio = await sbsService.getExchangeRate(date);
-    res.send({ status: 'OK', data: tipoCambio });
+    try {
+        const tipoCambio = await sbsService.getExchangeRate(token,date);
+        res.status(201).send({ data: tipoCambio });
+
+    } catch (error) {
+        next(error);
+    }
 }
 
+
 const getLatestExchangeRate = async (req, res) => {
-    const ultimoTipoCambio = await sbsService.getLatestExchangeRate();
-    res.send({ status: 'OK', data: ultimoTipoCambio });
+    const token = req.token; 
+
+    try {
+        const ultimoTipoCambio = await sbsService.getLatestExchangeRate(token);
+        res.status(201).send({ data: ultimoTipoCambio });
+
+    } catch (error) {
+        next(error);
+    }
 }
 
 export default {
