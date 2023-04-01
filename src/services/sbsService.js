@@ -1,61 +1,79 @@
 import axios from 'axios';
 
-const getToken = async() => {
+const getExchangeRate = async (token,data) => {
     try {
-        const data = new URLSearchParams({
-            grant_type: 'password',
-            client_id: 'api.chatbot',
-            client_secret: '8ab4dbf4-c378-495f-a30d-e3cc3c0b2c0d',
-            username: 'user-chatbot',
-            password: '+YM4Sj+5AVEYoTZff/000ersihYwtbQHLwplDuKRxdw=',
-            scope: 'api_only_chatbot'
-          });
-          const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-          };
-          const response = await axios.post('https://autapi.sbs.gob.pe/auth/realms/Realm.AppSbs/protocol/openid-connect/token', data, config);
-     
-          return response.data.access_token
-    } catch (error) {
-        console.log(error)
-    }
-};
-
-const getExchangeRate = async (data) => {
-    try {
-        const token = await getToken();
-    
         const config = {
           headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.post('https://servicios.sbs.gob.pe/api/ChatBot_Desa/TipoCambio/ObtenerTipoCambio',data ,config);
 
+        const response = await axios.post('https://servicios.sbs.gob.pe/api/ChatBot_Desa/TipoCambio/ObtenerTipoCambio',data ,config);
         return response.data;
-        
 
     } catch (error) {
-       console.log(error)
+        throw error;
     }
 };
 
-const getLatestExchangeRate = async () => {
+const getLatestExchangeRate = async (token) => {
     try {
-        const token = await getToken();
         const config = {
           headers: { Authorization: `Bearer ${token}` }
         };
 
         const response = await axios.post('https://servicios.sbs.gob.pe/api/ChatBot_Desa/TipoCambio/ObtenerUltimoTipoCambio',{},config);
-        
         return response.data;
     
     } catch (error) {
-       console.log(error)
+        throw error;
+    }
+};
+
+const getDebtReport = async (token,data) => {
+    try {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+
+        const response = await axios.post('https://servicios.sbs.gob.pe/api/ChatBot_Desa/ReporteDeudas/ObtenerReporteDeudas',data ,config);
+        return response.data;
+
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getMembershipReport = async (token,data) => {
+    try {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+
+        const response = await axios.post('https://servicios.sbs.gob.pe/api/ChatBot_Desa/ReporteAfiliacion/ObtenerReporteAfiliacion',data ,config);
+        return response.data;
+
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getLogin = async (token,data) => {
+    try {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+
+        const response = await axios.post('https://servicios.sbs.gob.pe/api/ChatBot_Desa/Login/ObtenerToken',data ,config);
+        return response.data;
+
+    } catch (error) {
+        throw error;
     }
 };
 
 export default {
     getExchangeRate,
-    getToken,
-    getLatestExchangeRate
+    getLatestExchangeRate,
+    getDebtReport,
+    getMembershipReport,
+    getLogin
 }
