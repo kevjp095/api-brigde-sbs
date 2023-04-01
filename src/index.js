@@ -1,9 +1,11 @@
 import express from 'express'
+import dotenv from 'dotenv';
 import v1TipoCambioRouter from './v1/routes/tipoCambio.js'
 import v1ReporteRouter from './v1/routes/reporte.js'
 import v1Login from './v1/routes/login.js'
 
 const app = express();
+dotenv.config();
 const PORT = process.env.PORT || 3900;
 
 app.use(express.json());

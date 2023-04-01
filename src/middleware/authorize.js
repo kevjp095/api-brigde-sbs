@@ -21,12 +21,12 @@ const authorize = async (req, res, next) => {
 const getToken = async() => {
     try {
         const data = new URLSearchParams({
-            grant_type: 'password',
-            client_id: 'api.chatbot',
-            client_secret: '8ab4dbf4-c378-495f-a30d-e3cc3c0b2c0d',
-            username: 'user-chatbot',
-            password: '+YM4Sj+5AVEYoTZff/000ersihYwtbQHLwplDuKRxdw=',
-            scope: 'api_only_chatbot'
+            grant_type: process.env.GRANT_TYPE,
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET,
+            username: process.env.USERNAMESBS,
+            password: process.env.PASSWORDSBS,
+            scope: process.env.SCOPE
           });
           const config = {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
