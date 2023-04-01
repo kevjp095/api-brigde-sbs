@@ -1,5 +1,5 @@
 import express from 'express';
-import tipoCambioController from '../../controllers/tipoCambioController.js';
+import loginSbsController from '../../controllers/loginSbsController.js';
 import authorize from '../../middleware/authorize.js';
 import errorHandler from '../../middleware/errorHandler.js';
 
@@ -10,7 +10,6 @@ router.use(authorize);
 router.use(errorHandler);
 
 router
-    .post("/",tipoCambioController.getExchangeRate)
-    .post("/ultimo",tipoCambioController.getLatestExchangeRate);
+    .post("/sbs",loginSbsController.getLoginSbs)
 
 export default router;

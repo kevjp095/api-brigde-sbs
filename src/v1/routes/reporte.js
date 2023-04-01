@@ -1,5 +1,5 @@
 import express from 'express';
-import tipoCambioController from '../../controllers/tipoCambioController.js';
+import reporteController from '../../controllers/reporteController.js';
 import authorize from '../../middleware/authorize.js';
 import errorHandler from '../../middleware/errorHandler.js';
 
@@ -10,7 +10,7 @@ router.use(authorize);
 router.use(errorHandler);
 
 router
-    .post("/",tipoCambioController.getExchangeRate)
-    .post("/ultimo",tipoCambioController.getLatestExchangeRate);
+    .post("/deuda",reporteController.getDebtReport)
+    .post("/afiliacion",reporteController.getMembershipReport)
 
 export default router;
