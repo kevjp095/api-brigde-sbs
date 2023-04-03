@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv';
+import cors from 'cors';
 import errorHandler from './middleware/errorHandler.js';
 import v1exchangeRouter from './v1/routes/exchangeRate.js'
 import v1ReportRouter from './v1/routes/report.js'
