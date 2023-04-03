@@ -1,6 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv';
-import cors from 'cors';
+//import cors from 'cors';
 import errorHandler from './middleware/errorHandler.js';
 import v1exchangeRouter from './v1/routes/exchangeRate.js'
 import v1ReportRouter from './v1/routes/report.js'
@@ -11,7 +11,7 @@ dotenv.config();
 const PORT = process.env.PORT || 3900;
 
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
 app.use(errorHandler);
 
 app.use("/api/v1/sbs/tipocambio", v1exchangeRouter)
