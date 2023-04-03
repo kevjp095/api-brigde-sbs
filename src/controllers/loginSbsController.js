@@ -1,6 +1,6 @@
 import sbsService from '../services/sbsService.js'
 
-const getLoginSbs = async (req, res, next) => {
+const getLogin = async (req, res, next) => {
     const token = req.token; 
     const { body } = req;
 
@@ -27,5 +27,5 @@ const getLoginSbs = async (req, res, next) => {
 }
 
 export default {
-    getLoginSbs,
+    getLogin,
 }
