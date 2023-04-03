@@ -4,7 +4,7 @@ import laraigoService from '../services/laraigoService.js'
 const getLogin = async (req, res, next) => {
     const token = req.token; 
     const { body } = req;
-    
+
     const key = body.key;
     const [corpid, orgid, conversationid, personid] = key.split('-');
 
@@ -38,7 +38,6 @@ const getLogin = async (req, res, next) => {
     try {
         const tokenSbs = await sbsService.getLogin(token, data);
         const apiLaraigo = await laraigoService.sendValues(valuesLaraigo)
-        console.log(apiLaraigo);
 
         res.status(201).send({ data: tokenSbs });
 
