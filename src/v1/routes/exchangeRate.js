@@ -1,5 +1,5 @@
 import express from 'express';
-import loginSbsController from '../../controllers/loginSbsController.js';
+import exchangeRateController from '../../controllers/exchangeRateController.js';
 import authorize from '../../middleware/authorize.js';
 
 const router = express.Router();
@@ -8,6 +8,7 @@ const router = express.Router();
 router.use(authorize);
 
 router
-    .post("/sbs",loginSbsController.getLogin)
+    .post("/",exchangeRateController.getExchangeRate)
+    .post("/ultimo",exchangeRateController.getLatestExchangeRate);
 
 export default router;

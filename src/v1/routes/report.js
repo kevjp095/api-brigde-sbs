@@ -1,5 +1,5 @@
 import express from 'express';
-import loginSbsController from '../../controllers/loginSbsController.js';
+import reportController from '../../controllers/reportController.js';
 import authorize from '../../middleware/authorize.js';
 
 const router = express.Router();
@@ -8,6 +8,7 @@ const router = express.Router();
 router.use(authorize);
 
 router
-    .post("/sbs",loginSbsController.getLogin)
+    .post("/deuda",reportController.getDebtReport)
+    .post("/afiliacion",reportController.getMembershipReport)
 
 export default router;
