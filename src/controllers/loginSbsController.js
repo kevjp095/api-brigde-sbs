@@ -39,7 +39,7 @@ const getLogin = async (req, res, next) => {
         const tokenSbs = await sbsService.getLogin(token, data);
         const apiLaraigo = await laraigoService.sendValues(valuesLaraigo)
         console.log(apiLaraigo)
-        res.status(201).send({ data: tokenSbs });
+        res.status(201).send({ data: tokenSbs, laraigo: apiLaraigo });
 
     } catch (error) {
         next(error);
