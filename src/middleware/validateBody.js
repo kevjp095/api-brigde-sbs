@@ -43,6 +43,17 @@ export const validateLogin = (req, res, next) => {
     next();
   };
 
+  export const validateDocumentMembership = (req, res, next) => {
+    const { body } = req;
+
+    if(!body.id_tipo_documento || !body.numero_documento){
+      const error = new Error("Parameter 'id_tipo_documento or numero_documento' can not be empty");
+      error.statusCode = 400;
+      error.code = 'missing_parameter';
+      return next(error);
+  }
+    next();
+  };
 
 
   
