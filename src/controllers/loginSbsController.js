@@ -38,6 +38,7 @@ const getLogin = async (req, res, next) => {
                 error.result = responseLaraigo.Result
                 return next(error);
             }
+            
         }
 
         res.status(201).send({ data: tokenSbs });
