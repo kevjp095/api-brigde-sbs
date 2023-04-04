@@ -4,13 +4,6 @@ const getDebtReport = async (req, res, next) => {
     const token = req.token; 
     const { body } = req;
 
-    if(!req.body.tipo_documento || !req.body.numero_documento){
-        const error = new Error("Parameter 'tipo_documento or numero_documento' can not be empty");
-        error.statusCode = 400;
-        error.code = 'missing_parameter';
-        return next(error);
-    }
-
     const data = {
         tipo_documento: body.tipo_documento,
         numero_documento: body.numero_documento
@@ -28,13 +21,6 @@ const getDebtReport = async (req, res, next) => {
 const getMembershipReport = async (req, res, next) => {
     const token = req.token; 
     const { body } = req;
-
-    if(!req.body.id_tipo_documento || !req.body.numero_documento){
-        const error = new Error("Parameter 'id_tipo_documento or numero_documento' can not be empty");
-        error.statusCode = 400;
-        error.code = 'missing_parameter';
-        return next(error);
-    }
 
     const data = {
         id_tipo_documento: body.id_tipo_documento,

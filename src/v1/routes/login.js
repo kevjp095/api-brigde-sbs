@@ -1,6 +1,7 @@
 import express from 'express';
 import loginSbsController from '../../controllers/loginSbsController.js';
 import authorize from '../../middleware/authorize.js';
+import { validateLogin } from '../../middleware/validateBody.js';
 
 const router = express.Router();
 
@@ -8,6 +9,6 @@ const router = express.Router();
 router.use(authorize);
 
 router
-    .post("/",loginSbsController.getLogin)
+    .post("/",validateLogin,loginSbsController.getLogin)
 
 export default router;

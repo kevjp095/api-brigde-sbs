@@ -1,6 +1,7 @@
 import express from 'express';
 import reportController from '../../controllers/reportController.js';
 import authorize from '../../middleware/authorize.js';
+import { validateDocument } from '../../middleware/validateBody.js';
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ const router = express.Router();
 router.use(authorize);
 
 router
-    .post("/deuda",reportController.getDebtReport)
-    .post("/afiliacion",reportController.getMembershipReport)
+    .post("/deuda",validateDocument,reportController.getDebtReport)
+    .post("/afiliacion",validateDocument,reportController.getMembershipReport)
 
 export default router;

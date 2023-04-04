@@ -1,15 +1,9 @@
 import sbsService from '../services/sbsService.js'
 
 const getExchangeRate = async (req, res, next) => {
+
     const token = req.token; 
     const { body } = req;
-
-    if(!req.body.fecha){
-        const error = new Error("Parameter 'fecha' can not be empty");
-        error.statusCode = 400;
-        error.code = 'missing_parameter';
-        return next(error);
-    }
 
     const date = {fecha: body.fecha}
 
