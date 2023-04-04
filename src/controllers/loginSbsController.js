@@ -22,15 +22,15 @@ const getLogin = async (req, res, next) => {
     try {
         const tokenSbs = await sbsService.getLogin(token, data);
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
-/*
+
         if (responseLaraigo.Success === false) {
-            const error = new Error(responseLaraigo.Msg);
+            const error = new Error("ERROR KEY APILARAIGO:" + responseLaraigo.Msg);
             error.statusCode = 500;
             error.code = 'apiLaraigo_error';
             error.result = responseLaraigo.Result
             return next(error);
         }
-*/
+
         res.status(201).send({ data: tokenSbs });
 
     } catch (error) {
