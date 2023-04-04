@@ -21,7 +21,7 @@ const getLogin = async (req, res, next) => {
 
     try {
         const tokenSbs = await sbsService.getLogin(token, data);
-
+        console.log(tokenSbs.is_success)
         if (tokenSbs.is_success === false) {
             const error = new Error(tokenSbs.message);
             error.is_success = tokenSbs.is_success;
