@@ -24,6 +24,7 @@ const getLogin = async (req, res, next) => {
 
         if (tokenSbs.is_success === false) {
             const error = new Error(tokenSbs.message);
+            error.is_success = tokenSbs.is_success;
             error.statusCode = 500;
             error.code = 'SBS_ERROR_AUTHENTICATION';
             return next(error);
