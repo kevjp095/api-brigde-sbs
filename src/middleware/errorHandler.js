@@ -11,6 +11,7 @@ const logger = winston.createLogger({
 
 const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
+  const is_success = err.is_success || null;
   const message = err.message || 'Hubo un error en el servidor';
 
   // Registra el error en el logger de Winston
@@ -21,6 +22,7 @@ const errorHandler = (err, req, res, next) => {
     file: err.fileName || null,
     code: statusCode,
     message: message,
+    is_success: is_success,
     stack: err.stack
   });
   
@@ -29,6 +31,7 @@ const errorHandler = (err, req, res, next) => {
     error: {
       code: statusCode,
       message: message,
+      is_success: is_success
     },
   });
 };
