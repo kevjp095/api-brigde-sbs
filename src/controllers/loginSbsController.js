@@ -10,7 +10,7 @@ const getLogin = async (req, res, next) => {
         numero_documento: body.numero_documento,
         contrasenia: body.contrasenia
     }
-    
+
     const [corpid, orgid, conversationid, personid] = body.key.split('-');
     const valuesLaraigo = {
         corpid: corpid,
@@ -21,7 +21,7 @@ const getLogin = async (req, res, next) => {
 
     try {
         const tokenSbs = await sbsService.getLogin(token, data);
-        console.log(tokenSbs.is_success)
+
         if (tokenSbs.is_success === false) {
             const error = new Error(tokenSbs.message);
             error.is_success = tokenSbs.is_success;
@@ -29,17 +29,15 @@ const getLogin = async (req, res, next) => {
             error.code = 'SBS_ERROR_AUTHENTICATION';
             return next(error);
         }
-        else{
-            const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
-/*
-            if (responseLaraigo.Success === false) {
-                const error = new Error("ERROR KEY APILARAIGO:" + responseLaraigo.Msg);
-                error.statusCode = 500;
-                error.code = 'apiLaraigo_error';
-                error.result = responseLaraigo.Result
-                return next(error);
-            }
-            */
+
+        const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
+
+        if (responseLaraigo.Success === false) {
+            const error = new Error("ERROR KEY APILARAIGO:" + responseLaraigo.Msg);
+            error.statusCode = 500;
+            error.code = 'apiLaraigo_error';
+            error.result = responseLaraigo.Result
+            return next(error);
         }
 
         res.status(201).send({ data: tokenSbs });
