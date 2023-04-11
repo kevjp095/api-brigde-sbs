@@ -10,7 +10,7 @@ const logger = winston.createLogger({
 });
 
 const errorHandler = (err, req, res, next) => {
-  console.log("mid", err.is_success)
+
   const statusCode = err.statusCode || 500;
   const is_success = err.is_success;
   const message = err.message || 'Hubo un error en el servidor';
