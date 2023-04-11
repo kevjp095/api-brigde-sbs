@@ -15,6 +15,7 @@ const getDebtReport = async (req, res, next) => {
         const structured = {
             reportname: "testreport",
             parameters: {
+                persona_natural: {},
                 deuda: [],
                 lineas_credito: []
             }
@@ -50,6 +51,9 @@ const getMembershipReport = async (req, res, next) => {
 const formatReportJson = (newJson, response) => {
 
     try {
+        const persona_natural = response.result.persona_natural;
+        newJson.parameters.persona_natural = persona_natural
+
         response.result.lista_deudas.forEach((deuda,) => {
 
             deuda.lista_reporte_crediticio_detalle.forEach((detalle) => {
@@ -80,7 +84,7 @@ const formatReportJson = (newJson, response) => {
         return newJson;
 
     } catch (error) {
-        next(error);
+        console.log(error)
     }
 
 }
