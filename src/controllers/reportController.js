@@ -1,3 +1,5 @@
+import moment from 'moment';
+moment.locale('es');
 import sbsService from '../services/sbsService.js'
 
 const getDebtReport = async (req, res, next) => {
@@ -16,8 +18,7 @@ const getDebtReport = async (req, res, next) => {
             reportname: "testreport",
             parameters: {
                 persona_natural: {},
-                deuda: [],
-                lineas_credito: []
+                detalle: []
             }
         };
 
@@ -53,32 +54,19 @@ const formatReportJson = (newJson, response) => {
     try {
         const persona_natural = response.result.persona_natural;
         newJson.parameters.persona_natural = persona_natural
+  
 
-        response.result.lista_deudas.forEach((deuda,) => {
+        response.result.lista_deudas.forEach((deuda) => {
+            const newData = {
+                anio: deuda.reporte_cabecera.anio,
+                mes: deuda.reporte_cabecera.mes,
+                fecha_reprote: moment().format('MMMM YYYY'),
+                deuda: deuda.lista_reporte_crediticio_detalle,
+                linea_credito: deuda.lista_reporte_crediticio_saldo
+            };
 
-            deuda.lista_reporte_crediticio_detalle.forEach((detalle) => {
+            newJson.parameters.detalle.push(newData);
 
-                const nuevaDeuda = {
-                    codigo_entidad: detalle.codigo_entidad,
-                    nombre_entidad: detalle.nombre_entidad,
-                    id_calificacion: detalle.id_calificacion,
-                    capital: detalle.capital,
-                    intereses_comisiones: detalle.intereses_comisiones,
-                    monto: detalle.monto
-                };
-
-                newJson.parameters.deuda.push(nuevaDeuda);
-            });
-
-            deuda.lista_reporte_crediticio_saldo.forEach((saldo) => {
-                const nuevaLineaCredito = {
-                    codigo_entidad: saldo.codigo_entidad,
-                    nombre_entidad: saldo.nombre_entidad,
-                    nombre_cuenta: saldo.nombre_cuenta,
-                    saldo: saldo.saldo
-                };
-                newJson.parameters.lineas_credito.push(nuevaLineaCredito);
-            });
         });
 
         return newJson;
