@@ -2,6 +2,7 @@ import sbsService from '../services/sbsService.js'
 import laraigoService from '../services/laraigoService.js'
 
 const getLogin = async (req, res, next) => {
+
     const token = req.token;
     const { body } = req;
 
@@ -16,10 +17,22 @@ const getLogin = async (req, res, next) => {
         corpid: corpid,
         orgid: orgid,
         conversationid: conversationid,
-        personid: personid
+        personid: personid,
+        event: req.body.event
     }
 
     try {
+
+        if(valuesLaraigo.event === 'CLOSE_LANDING' || valuesLaraigo.event === 'FORGOT_PASSWORD' || valuesLaraigo.event === 'MANYATTEMPTS'){
+            const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
+            if (responseLaraigo) {
+                const error = new Error("ERROR_AUTHENTICATION | EVENT_"+valuesLaraigo.event);
+                error.is_success = false;
+                error.statusCode = 401;
+                return next(error);
+            }
+        }
+
         const tokenSbs = await sbsService.getLogin(token, data);
 
         if (tokenSbs.is_success === false) {
@@ -30,6 +43,8 @@ const getLogin = async (req, res, next) => {
             return next(error);
         }
 
+
+        valuesLaraigo.event = 'LOGIN_SUCCESS'
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
         if (responseLaraigo.Success === false) {
@@ -45,6 +60,7 @@ const getLogin = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+    
 }
 
 export default {

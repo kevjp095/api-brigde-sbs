@@ -9,6 +9,6 @@ const router = express.Router();
 router.use(authorize);
 
 router
-    .post("/",validateLogin,loginSbsController.getLogin)
+    .post("/",loginSbsController.getLogin)
 
 export default router;
