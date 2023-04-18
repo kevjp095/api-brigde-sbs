@@ -79,6 +79,8 @@ const closeTab = async (req, res, next) => {
                 res.send('Formulario recibido');
             });
         }
+
+        /*
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
         if (responseLaraigo) {
             const error = new Error("ERROR_AUTHENTICATION | EVENT_" + valuesLaraigo.event);
@@ -86,7 +88,7 @@ const closeTab = async (req, res, next) => {
             error.statusCode = 401;
             return next(error);
         }
-
+        */
         res.status(201).send({ data: "close-tab" });
 
     } catch (error) {
