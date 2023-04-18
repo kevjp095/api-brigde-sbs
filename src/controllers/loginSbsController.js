@@ -1,3 +1,4 @@
+import formidable from 'formidable';
 import sbsService from '../services/sbsService.js'
 import laraigoService from '../services/laraigoService.js'
 
@@ -23,7 +24,23 @@ const getLogin = async (req, res, next) => {
 
     try {
 
+        
         if(valuesLaraigo.event === 'CLOSE_LANDING' || valuesLaraigo.event === 'FORGOT_PASSWORD' || valuesLaraigo.event === 'MANYATTEMPTS'){
+            if (req.is('multipart/form-data')) {
+                const form = formidable({ multiples: true });
+            
+                form.parse(req, (err, fields, files) => {
+                  if (err) {
+                    console.error(err);
+                    res.status(500).send('Error al procesar formulario');
+                    return;
+                  }
+            
+                  console.log('Campos recibidos:', fields);
+            
+                  res.send('Formulario recibido');
+                });
+              }
             const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
             if (responseLaraigo) {
                 const error = new Error("ERROR_AUTHENTICATION | EVENT_"+valuesLaraigo.event);
