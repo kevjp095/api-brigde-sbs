@@ -10,5 +10,6 @@ router.use(authorize);
 
 router
     .post("/",loginSbsController.getLogin)
+    .post("/close-tab",loginSbsController.closeTab)
 
 export default router;

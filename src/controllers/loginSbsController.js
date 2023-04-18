@@ -23,27 +23,10 @@ const getLogin = async (req, res, next) => {
     }
 
     try {
-
-        
-        if(valuesLaraigo.event === 'CLOSE_LANDING' || valuesLaraigo.event === 'FORGOT_PASSWORD' || valuesLaraigo.event === 'MANYATTEMPTS'){
-            if (req.is('multipart/form-data')) {
-                const form = formidable({ multiples: true });
-            
-                form.parse(req, (err, fields, files) => {
-                  if (err) {
-                    console.error(err);
-                    res.status(500).send('Error al procesar formulario');
-                    return;
-                  }
-            
-                  console.log('Campos recibidos:', fields);
-            
-                  res.send('Formulario recibido');
-                });
-              }
+        if (valuesLaraigo.event === 'CLOSE_LANDING' || valuesLaraigo.event === 'FORGOT_PASSWORD' || valuesLaraigo.event === 'MANYATTEMPTS') {
             const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
             if (responseLaraigo) {
-                const error = new Error("ERROR_AUTHENTICATION | EVENT_"+valuesLaraigo.event);
+                const error = new Error("ERROR_AUTHENTICATION | EVENT_" + valuesLaraigo.event);
                 error.is_success = false;
                 error.statusCode = 401;
                 return next(error);
@@ -77,9 +60,42 @@ const getLogin = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-    
+
+}
+
+const closeTab = async (req, res, next) => {
+
+    try {
+        if (req.is('multipart/form-data')) {
+            const form = formidable({ multiples: true });
+
+            form.parse(req, (err, fields, files) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).send('Error al procesar formulario');
+                    return;
+                }
+                console.log('Campos recibidos:', fields);
+                res.send('Formulario recibido');
+            });
+        }
+        const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
+        if (responseLaraigo) {
+            const error = new Error("ERROR_AUTHENTICATION | EVENT_" + valuesLaraigo.event);
+            error.is_success = false;
+            error.statusCode = 401;
+            return next(error);
+        }
+
+        res.status(201).send({ data: "close-tab" });
+
+    } catch (error) {
+        next(error);
+    }
+
 }
 
 export default {
     getLogin,
+    closeTab
 }
