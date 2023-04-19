@@ -89,14 +89,17 @@ const closeTab = async (req, res, next) => {
 
                 const responseLaraigo = await laraigoService.sendValues(values)
 
-                //console.log(responseLaraigo.response.data)
+                console.log(responseLaraigo.response.data)
+                console.log(responseLaraigo.response)
+                console.log(responseLaraigo)
+                /*
                 if (responseLaraigo.Success === false) {
                     const error = new Error("ERROR EVENT_CLOSE_tAB:" + responseLaraigo.Msg);
                     error.statusCode = 500;
                     error.code = 'apiLaraigo_error';
                     error.result = responseLaraigo.Result
                     return next(error);
-                }
+                }*/
                 res.status(201).send({ data: "ok" });
             });
         }
