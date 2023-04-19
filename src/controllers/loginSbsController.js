@@ -75,6 +75,7 @@ const closeTab = async (req, res, next) => {
                     res.status(500).send('Error KEY OR EVENT');
                     return;
                 }
+                console.log("campos:",fields)
                 const values = {
                     key: fields.key,
                     event: fields.event
