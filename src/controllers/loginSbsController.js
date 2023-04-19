@@ -87,11 +87,12 @@ const closeTab = async (req, res, next) => {
 
                 //res.send('Formulario recibido');
 
-                const responseLaraigo = await laraigoService.sendValues(values)
+               /* const responseLaraigo = await laraigoService.sendValues(values)
 
                 console.log(responseLaraigo.response.data)
                 console.log(responseLaraigo.response)
                 console.log(responseLaraigo)
+                */
                 /*
                 if (responseLaraigo.Success === false) {
                     const error = new Error("ERROR EVENT_CLOSE_tAB:" + responseLaraigo.Msg);
@@ -100,7 +101,7 @@ const closeTab = async (req, res, next) => {
                     error.result = responseLaraigo.Result
                     return next(error);
                 }*/
-                res.status(201).send({ data: "ok" });
+                //res.status(201).send({ data: "ok" });
             });
         }
 
