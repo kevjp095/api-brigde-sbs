@@ -64,6 +64,7 @@ const getLogin = async (req, res, next) => {
 }
 
 const closeTab = async (req, res, next) => {
+
     if (req.is('multipart/form-data')) {
         const form = formidable({ multiples: true });
     
@@ -83,7 +84,8 @@ const closeTab = async (req, res, next) => {
               personid: personid,
               event: fields.event
           }
-           const responseLaraigo = await laraigoService.sendValues(values)
+          console.log(values)
+          // const responseLaraigo = await laraigoService.sendValues(values)
  /*
                  console.log(responseLaraigo.response.data)
                  console.log(responseLaraigo.response)
