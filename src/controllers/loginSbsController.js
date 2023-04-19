@@ -19,7 +19,9 @@ const getLogin = async (req, res, next) => {
         orgid: orgid,
         conversationid: conversationid,
         personid: personid,
-        event: req.body.event
+        variables: {
+            accion_laraigo: req.body.event
+        }
     }
 
     try {
@@ -82,7 +84,9 @@ const closeTab = async (req, res, next) => {
               orgid: orgid,
               conversationid: conversationid,
               personid: personid,
-              event: fields.event
+              variables: {
+                accion_laraigo: fields.event
+            }
           }
           console.log(values)
            const responseLaraigo = await laraigoService.sendValues(values)
