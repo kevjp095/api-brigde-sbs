@@ -66,7 +66,7 @@ const getLogin = async (req, res, next) => {
 const closeTab = async (req, res, next) => {
 
     try {
-        
+        console.log("Asda")
        if (req.is('multipart/form-data')) {
 
             const form = formidable({ multiples: true });
