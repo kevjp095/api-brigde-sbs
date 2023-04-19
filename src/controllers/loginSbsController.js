@@ -76,8 +76,12 @@ const closeTab = async (req, res, next) => {
                     return;
                 }
                 console.log("campos:",fields)
+                const [corpid, orgid, conversationid, personid] = fields.key.split('-');
                 const values = {
-                    key: fields.key,
+                    corpid: corpid,
+                    orgid: orgid,
+                    conversationid: conversationid,
+                    personid: personid,
                     event: fields.event
                 }
 
