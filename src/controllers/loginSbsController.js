@@ -110,7 +110,7 @@ const closeTab = async (req, res, next) => {
             
 
         }
-        res.status(201).send({ data: "ok" });
+
     } catch (error) {
         next(error);
     }
