@@ -67,7 +67,7 @@ const closeTab = async (req, res, next) => {
     if (req.is('multipart/form-data')) {
         const form = formidable({ multiples: true });
     
-        form.parse(req, (err, fields, files) => {
+        form.parse(req, async(err, fields, files) => {
           if (err) {
             console.error(err);
             res.status(500).send('Error al procesar formulario');
@@ -75,8 +75,29 @@ const closeTab = async (req, res, next) => {
           }
     
           console.log('Campos recibidos:', fields);
-    
-          res.send('Formulario recibido');
+          const [corpid, orgid, conversationid, personid] = fields.key.split('-');
+          const values = {
+              corpid: corpid,
+              orgid: orgid,
+              conversationid: conversationid,
+              personid: personid,
+              event: fields.event
+          }
+           const responseLaraigo = await laraigoService.sendValues(values)
+ /*
+                 console.log(responseLaraigo.response.data)
+                 console.log(responseLaraigo.response)
+                 console.log(responseLaraigo)
+ 
+                if (responseLaraigo.Success === false) {
+                    const error = new Error("ERROR EVENT_CLOSE_tAB:" + responseLaraigo.Msg);
+                    error.statusCode = 500;
+                    error.code = 'apiLaraigo_error';
+                    error.result = responseLaraigo.Result
+                    return next(error);
+                }
+    */
+          res.status(201).send({ data: "ok" });
         });
       }
       else {
