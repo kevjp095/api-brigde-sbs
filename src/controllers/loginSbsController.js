@@ -72,13 +72,19 @@ const closeTab = async (req, res, next) => {
             form.parse(req, (err, fields, files) => {
                 if (err) {
                     console.error(err);
-                    res.status(500).send('Error al procesar formulario');
+                    res.status(500).send('Error KEY OR EVENT');
                     return;
                 }
-                console.log('Campos recibidos:', fields);
-                res.send('Formulario recibido');
+                console.log('key-event:', fields);
+                const values = {
+                    key: fields.key,
+                    event: fields.event
+                }
+
+                //res.send('Formulario recibido');
             });
         }
+        console.log(values)
 
         /*
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
@@ -89,7 +95,7 @@ const closeTab = async (req, res, next) => {
             return next(error);
         }
         */
-        res.status(201).send({ data: "close-tab" });
+        res.status(201).send({ data: values });
 
     } catch (error) {
         next(error);
