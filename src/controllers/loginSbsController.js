@@ -69,33 +69,37 @@ const closeTab = async (req, res, next) => {
         if (req.is('multipart/form-data')) {
             const form = formidable({ multiples: true });
 
-            form.parse(req, (err, fields, files) => {
+            form.parse(req, async (err, fields, files) => {
                 if (err) {
                     console.error(err);
                     res.status(500).send('Error KEY OR EVENT');
                     return;
                 }
-                console.log('key-event:', fields);
                 const values = {
                     key: fields.key,
                     event: fields.event
                 }
 
                 //res.send('Formulario recibido');
+
+                const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
+                console.log(responseLaraigo)
+                if (responseLaraigo.Success === false) {
+                    const error = new Error("ERROR EVENT_CLOSE_tAB:" + responseLaraigo.Msg);
+                    error.statusCode = 500;
+                    error.code = 'apiLaraigo_error';
+                    error.result = responseLaraigo.Result
+                    return next(error);
+                }
+                
             });
         }
-        console.log(values)
+
 
         /*
-        const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
-        if (responseLaraigo) {
-            const error = new Error("ERROR_AUTHENTICATION | EVENT_" + valuesLaraigo.event);
-            error.is_success = false;
-            error.statusCode = 401;
-            return next(error);
-        }
+
         */
-        res.status(201).send({ data: values });
+        res.status(201).send({ data: "ok" });
 
     } catch (error) {
         next(error);
