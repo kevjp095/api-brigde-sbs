@@ -89,7 +89,7 @@ const closeTab = async (req, res, next) => {
 
                 const responseLaraigo = await laraigoService.sendValues(values)
 
-                console.log(responseLaraigo.data)
+                console.log(responseLaraigo.response.data)
                 if (responseLaraigo.Success === false) {
                     const error = new Error("ERROR EVENT_CLOSE_tAB:" + responseLaraigo.Msg);
                     error.statusCode = 500;
