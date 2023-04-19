@@ -79,16 +79,8 @@ const closeTab = async (req, res, next) => {
           res.send('Formulario recibido');
         });
       }
-      // Si el tipo de contenido de la solicitud es application/json
-      else if (req.is('application/json')) {
-        const data = req.body;
-        console.log('Datos recibidos:', data);
-    
-        res.send('Datos recibidos');
-      }
-      // Si el tipo de contenido de la solicitud no es compatible
       else {
-        res.status(400).send('Tipo de contenido no compatible');
+        res.status(400).send('Tipo de contenido no compatible, ONLY-FORMDATA');
       }
 }
 
