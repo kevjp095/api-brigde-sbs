@@ -86,9 +86,6 @@ const closeTab = async (req, res, next) => {
           }
           console.log(values)
            const responseLaraigo = await laraigoService.sendValues(values)
- 
-                 console.log(responseLaraigo.response.data)
-                 console.log(responseLaraigo.response)
                  console.log(responseLaraigo)
  /*
                 if (responseLaraigo.Success === false) {
