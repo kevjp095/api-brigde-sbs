@@ -75,7 +75,7 @@ const closeTab = async (req, res, next) => {
                     res.status(500).send('Error KEY OR EVENT');
                     return;
                 }
-                console.log("campos:",fields)
+                console.log("campos:", fields)
                 const [corpid, orgid, conversationid, personid] = fields.key.split('-');
                 const values = {
                     corpid: corpid,
@@ -85,14 +85,14 @@ const closeTab = async (req, res, next) => {
                     event: fields.event
                 }
 
-                //res.send('Formulario recibido');
+                res.send('Formulario recibido');
 
-               /* const responseLaraigo = await laraigoService.sendValues(values)
-
-                console.log(responseLaraigo.response.data)
-                console.log(responseLaraigo.response)
-                console.log(responseLaraigo)
-                */
+                /* const responseLaraigo = await laraigoService.sendValues(values)
+ 
+                 console.log(responseLaraigo.response.data)
+                 console.log(responseLaraigo.response)
+                 console.log(responseLaraigo)
+                 */
                 /*
                 if (responseLaraigo.Success === false) {
                     const error = new Error("ERROR EVENT_CLOSE_tAB:" + responseLaraigo.Msg);
@@ -103,6 +103,7 @@ const closeTab = async (req, res, next) => {
                 }*/
                 //res.status(201).send({ data: "ok" });
             });
+            res.status(201).send({ data: "ok" });
         }
 
     } catch (error) {
