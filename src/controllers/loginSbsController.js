@@ -78,6 +78,7 @@ const closeTab = async (req, res, next) => {
                     return;
                 }
                 console.log("campos:", fields)
+                /*
                 const [corpid, orgid, conversationid, personid] = fields.key.split('-');
                 const values = {
                     corpid: corpid,
@@ -86,6 +87,7 @@ const closeTab = async (req, res, next) => {
                     personid: personid,
                     event: fields.event
                 }
+                */
 
                 res.send('Formulario recibido');
 
