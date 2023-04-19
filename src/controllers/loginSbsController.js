@@ -46,7 +46,7 @@ const getLogin = async (req, res, next) => {
         }
 
 
-        valuesLaraigo.event = 'LOGIN_SUCCESS'
+        valuesLaraigo.variables.accion_laraigo='LOGINSUCCESS'
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
         if (responseLaraigo.Success === false) {
