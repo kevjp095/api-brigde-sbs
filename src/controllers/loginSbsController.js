@@ -66,7 +66,7 @@ const getLogin = async (req, res, next) => {
 const closeTab = async (req, res, next) => {
 
     try {
-        /*
+        
        if (req.is('multipart/form-data')) {
 
             const form = formidable({ multiples: true });
@@ -89,8 +89,8 @@ const closeTab = async (req, res, next) => {
 
                 res.send('Formulario recibido');
 
-                 const responseLaraigo = await laraigoService.sendValues(values)
- 
+                 //const responseLaraigo = await laraigoService.sendValues(values)
+ /*
                  console.log(responseLaraigo.response.data)
                  console.log(responseLaraigo.response)
                  console.log(responseLaraigo)
@@ -102,11 +102,12 @@ const closeTab = async (req, res, next) => {
                     error.result = responseLaraigo.Result
                     return next(error);
                 }
-                res.status(201).send({ data: "ok" });
+                */
+                res.status(201).send({ data: "22" });
             });
             
 
-        }*/
+        }
         res.status(201).send({ data: "ok" });
     } catch (error) {
         next(error);
