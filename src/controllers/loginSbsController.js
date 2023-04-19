@@ -64,57 +64,32 @@ const getLogin = async (req, res, next) => {
 }
 
 const closeTab = async (req, res, next) => {
-
-    try {
-        console.log("Asda")
-       if (req.is('multipart/form-data')) {
-
-            const form = formidable({ multiples: true });
-
-            form.parse(req, async (err, fields, files) => {
-                if (err) {
-                    console.error(err);
-                    res.status(500).send('Error KEY OR EVENT');
-                    return;
-                }
-                console.log("campos:", fields)
-                /*
-                const [corpid, orgid, conversationid, personid] = fields.key.split('-');
-                const values = {
-                    corpid: corpid,
-                    orgid: orgid,
-                    conversationid: conversationid,
-                    personid: personid,
-                    event: fields.event
-                }
-                */
-
-                res.send('Formulario recibido');
-
-                 //const responseLaraigo = await laraigoService.sendValues(values)
- /*
-                 console.log(responseLaraigo.response.data)
-                 console.log(responseLaraigo.response)
-                 console.log(responseLaraigo)
- 
-                if (responseLaraigo.Success === false) {
-                    const error = new Error("ERROR EVENT_CLOSE_tAB:" + responseLaraigo.Msg);
-                    error.statusCode = 500;
-                    error.code = 'apiLaraigo_error';
-                    error.result = responseLaraigo.Result
-                    return next(error);
-                }
-                */
-                res.status(201).send({ data: "22" });
-            });
-            
-
-        }
-
-    } catch (error) {
-        next(error);
-    }
-
+    if (req.is('multipart/form-data')) {
+        const form = formidable({ multiples: true });
+    
+        form.parse(req, (err, fields, files) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send('Error al procesar formulario');
+            return;
+          }
+    
+          console.log('Campos recibidos:', fields);
+    
+          res.send('Formulario recibido');
+        });
+      }
+      // Si el tipo de contenido de la solicitud es application/json
+      else if (req.is('application/json')) {
+        const data = req.body;
+        console.log('Datos recibidos:', data);
+    
+        res.send('Datos recibidos');
+      }
+      // Si el tipo de contenido de la solicitud no es compatible
+      else {
+        res.status(400).send('Tipo de contenido no compatible');
+      }
 }
 
 export default {
