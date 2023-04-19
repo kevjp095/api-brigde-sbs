@@ -85,7 +85,7 @@ const closeTab = async (req, res, next) => {
               event: fields.event
           }
           console.log(values)
-          // const responseLaraigo = await laraigoService.sendValues(values)
+           const responseLaraigo = await laraigoService.sendValues(values)
  /*
                  console.log(responseLaraigo.response.data)
                  console.log(responseLaraigo.response)
