@@ -10,7 +10,6 @@ const sendValues = async (data) => {
             error.result = responseLaraigo.Result
             return next(error);
         }
-
         return response.data;
 
     } catch (error) {

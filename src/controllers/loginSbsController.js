@@ -77,7 +77,8 @@ const closeTab = async (req, res, next) => {
             return;
           }
     
-          console.log('Campos recibidos:', fields);
+          //console.log('Campos recibidos:', fields);
+         
           const [corpid, orgid, conversationid, personid] = fields.key.split('-');
           const values = {
               corpid: corpid,
@@ -91,14 +92,14 @@ const closeTab = async (req, res, next) => {
           console.log(values)
            const responseLaraigo = await laraigoService.sendValues(values)
                 if (responseLaraigo.Success === false) {
-                    const error = new Error("ERROR EVENT_CLOSE_tAB:" + responseLaraigo.Msg);
+                    const error = new Error("ERROR EVENT_CLOSE_TAB:" + responseLaraigo.Msg);
                     error.statusCode = 500;
                     error.code = 'apiLaraigo_error';
                     error.result = responseLaraigo.Result
                     return next(error);
                 }
-    
-          res.status(201).send({ data: "ok" });
+                
+          res.status(201).send({ data: responseLaraigo });
         });
       }
       else {

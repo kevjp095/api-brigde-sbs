@@ -36,7 +36,7 @@ const getToken = async() => {
           return response.data.access_token
 
     } catch (error) {
-      throw error;
+      return error
     }
 }
 export default authorize;
