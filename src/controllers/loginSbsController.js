@@ -27,6 +27,7 @@ const getLogin = async (req, res, next) => {
     try {
         if (valuesLaraigo.event === 'CLOSE_LANDING' || valuesLaraigo.event === 'FORGOT_PASSWORD' || valuesLaraigo.event === 'MANYATTEMPTS') {
             const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
+            console.log("response::", responseLaraigo)
             if (responseLaraigo.Success === false) {
                 const error = new Error("ERROR_AUTHENTICATION | EVENT_" + valuesLaraigo.event);
                 error.is_success = false;
@@ -47,9 +48,9 @@ const getLogin = async (req, res, next) => {
 
 
         valuesLaraigo.variables.accion_landing='LOGINSUCCESS'
-        console.log(valuesLaraigo)
+        
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
-
+    
         if (responseLaraigo.Success === false) {
             const error = new Error("ERROR KEY APILARAIGO:" + responseLaraigo.Msg);
             error.statusCode = 500;
