@@ -20,7 +20,7 @@ const getLogin = async (req, res, next) => {
         conversationid: conversationid,
         personid: personid,
         variables: {
-            accion_laraigo: req.body.event
+            accion_landing: req.body.event
         }
     }
 
@@ -46,7 +46,7 @@ const getLogin = async (req, res, next) => {
         }
 
 
-        valuesLaraigo.variables.accion_laraigo='LOGINSUCCESS'
+        valuesLaraigo.variables.accion_landing='LOGINSUCCESS'
         console.log(valuesLaraigo)
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
@@ -87,7 +87,7 @@ const closeTab = async (req, res, next) => {
               conversationid: conversationid,
               personid: personid,
               variables: {
-                accion_laraigo: fields.event
+                accion_landing: fields.event
             }
           }
           console.log(values)
