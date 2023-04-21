@@ -12,7 +12,7 @@ const getLogin = async (req, res, next) => {
         numero_documento: body.numero_documento,
         contrasenia: body.contrasenia
     }
-
+    
     const [corpid, orgid, conversationid, personid] = body.key.split('-');
     const valuesLaraigo = {
         corpid: corpid,
@@ -23,7 +23,7 @@ const getLogin = async (req, res, next) => {
             accion_landing: req.body.event
         }
     }
-
+    console.log(valuesLaraigo)
     try {
         if (valuesLaraigo.event === 'CLOSE_LANDING' || valuesLaraigo.event === 'FORGOT_PASSWORD' || valuesLaraigo.event === 'MANYATTEMPTS') {
             const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
@@ -63,7 +63,6 @@ const getLogin = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-
 }
 
 const closeTab = async (req, res, next) => {
@@ -78,8 +77,7 @@ const closeTab = async (req, res, next) => {
             return;
           }
     
-          //console.log('Campos recibidos:', fields);
-         
+          //console.log('Campos recibidos:', fields);         
           const [corpid, orgid, conversationid, personid] = fields.key.split('-');
           const values = {
               corpid: corpid,
