@@ -25,15 +25,18 @@ const getLogin = async (req, res, next) => {
     }
     console.log(valuesLaraigo)
     try {
-        if (valuesLaraigo.event === 'CLOSE_LANDING' || valuesLaraigo.event === 'FORGOT_PASSWORD' || valuesLaraigo.event === 'MANYATTEMPTS') {
+        if (valuesLaraigo.event === 'FORGOT_PASSWORD' || valuesLaraigo.event === 'MANYATTEMPTS') {
             const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
             console.log("response::", responseLaraigo)
+            
             if (responseLaraigo.Success === false) {
                 const error = new Error("ERROR_AUTHENTICATION | EVENT_" + valuesLaraigo.event);
                 error.is_success = false;
                 error.statusCode = 401;
                 return next(error);
             }
+            
+            res.status(201).send({ data: "ok" });
         }
 
         const tokenSbs = await sbsService.getLogin(token, data);
