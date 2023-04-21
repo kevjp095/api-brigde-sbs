@@ -27,7 +27,7 @@ const getLogin = async (req, res, next) => {
     try {
         if (valuesLaraigo.event === 'CLOSE_LANDING' || valuesLaraigo.event === 'FORGOT_PASSWORD' || valuesLaraigo.event === 'MANYATTEMPTS') {
             const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
-            if (responseLaraigo) {
+            if (responseLaraigo.Success === false) {
                 const error = new Error("ERROR_AUTHENTICATION | EVENT_" + valuesLaraigo.event);
                 error.is_success = false;
                 error.statusCode = 401;
