@@ -21,8 +21,8 @@ const getLogin = async (req, res, next) => {
         personid: personid,
         variables: {
             accion_landing: body.event,
-            tipo_documento: body.tipo_documento,
-            numero_documento: body.numero_documento
+            tipo_doc: body.tipo_documento,
+            num_doc: body.numero_documento
         }
     }
     console.log(valuesLaraigo)
