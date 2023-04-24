@@ -20,7 +20,9 @@ const getLogin = async (req, res, next) => {
         conversationid: conversationid,
         personid: personid,
         variables: {
-            accion_landing: req.body.event
+            accion_landing: body.event,
+            tipo_documento: body.tipo_documento,
+            numero_documento: body.numero_documento
         }
     }
     console.log(valuesLaraigo)
