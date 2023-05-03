@@ -18,11 +18,11 @@ export const validateLogin = (req, res, next) => {
     next();
   };
   
-  export const validateDate = (req, res, next) => {
+  export const validateExchange = (req, res, next) => {
     const { body } = req;
 
-    if(!body.fecha){
-      const error = new Error("Parameter 'fecha' can not be empty");
+    if(!body.fecha || !body.moneda){
+      const error = new Error("Parameter 'fecha' or 'moneda' can not be empty");
       error.statusCode = 400;
       error.code = 'missing_parameter';
       return next(error);
