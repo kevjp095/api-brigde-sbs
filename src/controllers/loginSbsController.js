@@ -14,17 +14,18 @@ const getLogin = async (req, res, next) => {
     }
 
     const [corpid, orgid, conversationid, personid] = body.key.split('-');
-    const valuesLaraigo = {
-        corpid: corpid,
-        orgid: orgid,
-        conversationid: conversationid,
-        personid: personid,
-        variables: {
-            accion_landing: body.event,
-            tipo_doc: body.tipo_documento,
-            num_doc: body.numero_documento
+        const valuesLaraigo = {
+            corpid: corpid,
+            orgid: orgid,
+            conversationid: conversationid,
+            personid: personid,
+            variables: {
+                accion_landing: body.event,
+                tipo_doc: body.tipo_documento,
+                num_doc: body.numero_documento,
+                email: ""
+            }
         }
-    }
     console.log(valuesLaraigo)
     try {
         if (valuesLaraigo.variables.accion_landing === 'FORGOT_PASSWORD' || valuesLaraigo.variables.accion_landing === 'MANYATTEMPTS') {
@@ -37,7 +38,7 @@ const getLogin = async (req, res, next) => {
             }
             return;
         }
-        console.log(token)
+      
         const responseSbs = await sbsService.getLogin(token, data);
 
         if (responseSbs.is_success === false) {
@@ -48,9 +49,10 @@ const getLogin = async (req, res, next) => {
             return next(error);
         }
 
-        const result = newResponse(responseSbs);
+        const email_user = getEmail(responseSbs);
 
-        valuesLaraigo.variables.accion_landing = 'LOGINSUCCESS'
+        valuesLaraigo.variables.accion_landing = 'LOGINSUCCESS';
+        valuesLaraigo.variables.email = email_user;
 
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
@@ -110,7 +112,7 @@ const closeTab = async (req, res, next) => {
     }
 }
 
-const newResponse = (response) => {
+const getEmail = (response) => {
     let email_user = "";
     const arrayParametros = response.result.parametros
     for (let item of arrayParametros) {
@@ -119,23 +121,7 @@ const newResponse = (response) => {
             break;
         }
     }
-
-    let newJson = {
-        is_success: response.is_success,
-        result: {
-            token: {
-                token_type: response.result.token.token_type,
-                access_token: response.result.token.access_token,
-                refresh_token: response.result.token.refresh_token,
-                expires_in: response.result.token.expires_in
-            },
-            parametros: {
-                email: email_user,
-            }
-        }
-    }
-
-    return newJson;
+    return email_user;
 }
 
 export default {
