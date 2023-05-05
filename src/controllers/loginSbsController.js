@@ -12,7 +12,7 @@ const getLogin = async (req, res, next) => {
         numero_documento: body.numero_documento,
         contrasenia: body.contrasenia
     }
-    
+
     const [corpid, orgid, conversationid, personid] = body.key.split('-');
     const valuesLaraigo = {
         corpid: corpid,
@@ -37,22 +37,23 @@ const getLogin = async (req, res, next) => {
             }
             return;
         }
+        console.log(token)
+        const responseSbs = await sbsService.getLogin(token, data);
 
-        const tokenSbs = await sbsService.getLogin(token, data);
-
-        if (tokenSbs.is_success === false) {
-            const error = new Error(tokenSbs.message);
-            error.is_success = tokenSbs.is_success;
+        if (responseSbs.is_success === false) {
+            const error = new Error(responseSbs.message);
+            error.is_success = responseSbs.is_success;
             error.statusCode = 500;
             error.code = 'SBS_ERROR_AUTHENTICATION';
             return next(error);
         }
 
+        const result = newResponse(responseSbs);
 
-        valuesLaraigo.variables.accion_landing='LOGINSUCCESS'
-        
+        valuesLaraigo.variables.accion_landing = 'LOGINSUCCESS'
+
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
-    
+
         if (responseLaraigo.Success === false) {
             const error = new Error("ERROR KEY APILARAIGO:" + responseLaraigo.Msg);
             error.statusCode = 500;
@@ -61,7 +62,7 @@ const getLogin = async (req, res, next) => {
             return next(error);
         }
 
-        res.status(201).send({ data: tokenSbs });
+        res.status(201).send({ result: result });
 
     } catch (error) {
         next(error);
@@ -72,41 +73,69 @@ const closeTab = async (req, res, next) => {
 
     if (req.is('multipart/form-data')) {
         const form = formidable({ multiples: true });
-    
-        form.parse(req, async(err, fields, files) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send('Error al procesar formulario');
-            return;
-          }
-    
-          //console.log('Campos recibidos:', fields);         
-          const [corpid, orgid, conversationid, personid] = fields.key.split('-');
-          const values = {
-              corpid: corpid,
-              orgid: orgid,
-              conversationid: conversationid,
-              personid: personid,
-              variables: {
-                accion_landing: fields.event
+
+        form.parse(req, async (err, fields, files) => {
+            if (err) {
+                console.error(err);
+                res.status(500).send('Error al procesar formulario');
+                return;
             }
-          }
-          console.log(values)
-           const responseLaraigo = await laraigoService.sendValues(values)
-                if (responseLaraigo.Success === false) {
-                    const error = new Error("ERROR EVENT_CLOSE_TAB:" + responseLaraigo.Msg);
-                    error.statusCode = 500;
-                    error.code = 'apiLaraigo_error';
-                    error.result = responseLaraigo.Result
-                    return next(error);
+
+            //console.log('Campos recibidos:', fields);         
+            const [corpid, orgid, conversationid, personid] = fields.key.split('-');
+            const values = {
+                corpid: corpid,
+                orgid: orgid,
+                conversationid: conversationid,
+                personid: personid,
+                variables: {
+                    accion_landing: fields.event
                 }
-                
-          res.status(201).send({ data: responseLaraigo });
+            }
+            console.log(values)
+            const responseLaraigo = await laraigoService.sendValues(values)
+            if (responseLaraigo.Success === false) {
+                const error = new Error("ERROR EVENT_CLOSE_TAB:" + responseLaraigo.Msg);
+                error.statusCode = 500;
+                error.code = 'apiLaraigo_error';
+                error.result = responseLaraigo.Result
+                return next(error);
+            }
+
+            res.status(201).send({ data: responseLaraigo });
         });
-      }
-      else {
+    }
+    else {
         res.status(400).send('Tipo de contenido no compatible, ONLY-FORMDATA');
-      }
+    }
+}
+
+const newResponse = (response) => {
+    let email_user = "";
+    const arrayParametros = response.result.parametros
+    for (let item of arrayParametros) {
+        if (item.type === "email") {
+            email_user = item.value;
+            break;
+        }
+    }
+
+    let newJson = {
+        is_success: response.is_success,
+        result: {
+            token: {
+                token_type: response.result.token.token_type,
+                access_token: response.result.token.access_token,
+                refresh_token: response.result.token.refresh_token,
+                expires_in: response.result.token.expires_in
+            },
+            parametros: {
+                email: email_user,
+            }
+        }
+    }
+
+    return newJson;
 }
 
 export default {
