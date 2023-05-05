@@ -26,7 +26,7 @@ const getLogin = async (req, res, next) => {
                 email: ""
             }
         }
-    console.log(valuesLaraigo)
+
     try {
         if (valuesLaraigo.variables.accion_landing === 'FORGOT_PASSWORD' || valuesLaraigo.variables.accion_landing === 'MANYATTEMPTS') {
             const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
@@ -53,8 +53,9 @@ const getLogin = async (req, res, next) => {
 
         valuesLaraigo.variables.accion_landing = 'LOGINSUCCESS';
         valuesLaraigo.variables.email = email_user;
-
+        console.log("VALUES: ",valuesLaraigo)
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
+        console.log("RESPUESTA:",responseLaraigo)
 
         if (responseLaraigo.Success === false) {
             const error = new Error("ERROR KEY APILARAIGO:" + responseLaraigo.Msg);
