@@ -64,7 +64,7 @@ const getLogin = async (req, res, next) => {
             return next(error);
         }
 
-        res.status(201).send({ result: result });
+        res.status(201).send({ result: responseSbs });
 
     } catch (error) {
         next(error);
