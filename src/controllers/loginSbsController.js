@@ -14,18 +14,21 @@ const getLogin = async (req, res, next) => {
     }
 
     const [corpid, orgid, conversationid, personid] = body.key.split('-');
-        const valuesLaraigo = {
-            corpid: corpid,
-            orgid: orgid,
-            conversationid: conversationid,
-            personid: personid,
-            variables: {
-                accion_landing: body.event,
-                tipo_doc: body.tipo_documento,
-                num_doc: body.numero_documento,
-                email: ""
-            }
+    const valuesLaraigo = {
+        corpid: corpid,
+        orgid: orgid,
+        conversationid: conversationid,
+        personid: personid,
+        variables: {
+            accion_landing: body.event,
+            tipo_doc: body.tipo_documento,
+            num_doc: body.numero_documento,
+            email: "",
+            fec_nac: "",
+            full_name:"",
+            fec_login: ""
         }
+    }
 
     try {
         if (valuesLaraigo.variables.accion_landing === 'FORGOT_PASSWORD' || valuesLaraigo.variables.accion_landing === 'MANYATTEMPTS') {
@@ -38,7 +41,7 @@ const getLogin = async (req, res, next) => {
             }
             return;
         }
-      
+
         const responseSbs = await sbsService.getLogin(token, data);
 
         if (responseSbs.is_success === false) {
@@ -49,13 +52,19 @@ const getLogin = async (req, res, next) => {
             return next(error);
         }
 
-        const email_user = getEmail(responseSbs);
+        let email_user = getEmail(responseSbs);
+        let fec_nac = getFecNac(responseSbs);
+        let full_name = getFullName(responseSbs);
+        let fec_login = getDate(responseSbs);
 
         valuesLaraigo.variables.accion_landing = 'LOGINSUCCESS';
         valuesLaraigo.variables.email = email_user;
-        console.log("VALUES: ",valuesLaraigo)
+        valuesLaraigo.variables.fec_nac= fec_nac;
+        valuesLaraigo.variables.full_name= full_name;
+        valuesLaraigo.variables.fec_login= fec_login;
+    
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
-        console.log("RESPUESTA:",responseLaraigo)
+
 
         if (responseLaraigo.Success === false) {
             const error = new Error("ERROR KEY APILARAIGO:" + responseLaraigo.Msg);
@@ -123,6 +132,40 @@ const getEmail = (response) => {
         }
     }
     return email_user;
+}
+const getFecNac = (response) => {
+    let fec_nac = "";
+    const arrayParametros = response.result.parametros
+    for (let item of arrayParametros) {
+        if (item.type === "fecnac") {
+            fec_nac = item.value;
+            break;
+        }
+    }
+    return fec_nac;
+}
+const getFullName = (response) => {
+    let full_name = "";
+    const arrayParametros = response.result.parametros
+    for (let item of arrayParametros) {
+        if (item.type === "name") {
+            full_name = item.value;
+            break;
+        }
+    }
+    return full_name;
+}
+
+const getDate = (response) => {
+    let date_sbs = "";
+    const arrayParametros = response.result.token.http_response.headers
+    for (let item of arrayParametros) {
+        if (item.key === "Date") {
+            date_sbs = item.value.toString();
+            break;
+        }
+    }
+    return date_sbs;
 }
 
 export default {
