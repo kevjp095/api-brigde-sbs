@@ -65,8 +65,6 @@ const getLogin = async (req, res, next) => {
         valuesLaraigo.variables.full_name= full_name;
         valuesLaraigo.variables.fec_login= fec_login.format('DD/MM/YYYY HH:mm:ss');
     
-        console.log("LARAIGOOOOOOOO:",valuesLaraigo)
-
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
 
