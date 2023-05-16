@@ -1,3 +1,4 @@
+import moment from 'moment';
 import formidable from 'formidable';
 import sbsService from '../services/sbsService.js'
 import laraigoService from '../services/laraigoService.js'
@@ -55,14 +56,17 @@ const getLogin = async (req, res, next) => {
         let email_user = getEmail(responseSbs);
         let fec_nac = getFecNac(responseSbs);
         let full_name = getFullName(responseSbs);
-        let fec_login = getDate(responseSbs);
+        let fec_login = moment(getDate(responseSbs), 'ddd, DD MMM YYYY HH:mm:ss [GMT]');
+        
 
         valuesLaraigo.variables.accion_landing = 'LOGINSUCCESS';
         valuesLaraigo.variables.email = email_user;
         valuesLaraigo.variables.fec_nac= fec_nac;
         valuesLaraigo.variables.full_name= full_name;
-        valuesLaraigo.variables.fec_login= fec_login;
+        valuesLaraigo.variables.fec_login= fec_login.format('DD/MM/YYYY HH:mm:ss');
     
+        console.log("LARAIGOOOOOOOO:",valuesLaraigo)
+
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
 
