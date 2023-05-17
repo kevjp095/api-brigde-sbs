@@ -14,15 +14,7 @@ const getDebtReport = async (req, res, next) => {
     try {
         const result = await sbsService.getDebtReport(token, data);
 
-        const structured = {
-            reportname: "testreport",
-            parameters: {
-                persona_natural: {},
-                detalle: []
-            }
-        };
-
-        const report = formatReportJson(structured, result)
+        const report = formatReportJson(result)
 
         res.status(201).send({ data: report });
 
@@ -49,14 +41,27 @@ const getMembershipReport = async (req, res, next) => {
     }
 }
 
-const formatReportJson = (newJson, response) => {
-
+const formatReportJson = (response) => {
     try {
+        const newJson = {
+            reportname: "testreport",
+            parameters: {
+                persona_natural: {},
+                detalle: []
+            }
+        };
+
         const persona_natural = response.result.persona_natural;
-        newJson.parameters.persona_natural = persona_natural
-  
+        newJson.parameters.persona_natural = persona_natural;
+
+        let hasNullReporteCabecera = false;
 
         response.result.lista_deudas.forEach((deuda) => {
+            // si el services no tiene deuda
+            if (deuda.reporte_cabecera === null) {
+                hasNullReporteCabecera = true; 
+                return; // Salta a la siguiente iteración del bucle forEach
+            }
             const newData = {
                 anio: deuda.reporte_cabecera.anio,
                 mes: deuda.reporte_cabecera.mes,
@@ -66,16 +71,19 @@ const formatReportJson = (newJson, response) => {
             };
 
             newJson.parameters.detalle.push(newData);
-
         });
 
+        if (hasNullReporteCabecera) {
+            return response; // Retorna response si se encontró alguna deuda con reporte_cabecera null
+        }
+
         return newJson;
-
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        Next(error)
     }
+};
 
-}
 
 export default {
     getDebtReport,
