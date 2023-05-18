@@ -61,9 +61,9 @@ const formatReportJson = (response) => {
             if (deuda.reporte_cabecera === null) {
                 hasNullReporteCabecera = true; 
                 const newData = {
-                    anio: "0",
-                    mes: "0",
-                    fecha_reprote: moment().format('MMMM YYYY'),
+                    anio: "",
+                    mes: "",
+                    fecha_reprote: "",
                     deuda:[],
                     linea_credito: [],
                 };
@@ -75,7 +75,7 @@ const formatReportJson = (response) => {
             const newData = {
                 anio: deuda.reporte_cabecera.anio,
                 mes: deuda.reporte_cabecera.mes,
-                fecha_reprote: moment().format('MMMM YYYY'),
+                fecha_report: moment().month(deuda.reporte_cabecera.mes - 1).format('MMMM') +" "+ deuda.reporte_cabecera.anio,
                 deuda: deuda.lista_reporte_crediticio_detalle,
                 linea_credito: deuda.lista_reporte_crediticio_saldo
             };
@@ -90,7 +90,6 @@ const formatReportJson = (response) => {
         return newJson;
     } catch (error) {
         console.log(error);
-        Next(error)
     }
 };
 
