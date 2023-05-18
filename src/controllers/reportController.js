@@ -63,7 +63,7 @@ const formatReportJson = (response) => {
                 const newData = {
                     ultimo_periodo: deuda.ultimo_periodo,
                     anio:  moment(deuda.ultimo_periodo).format('YYYY'),
-                    mes: moment(deuda.ultimo_periodo).format('MM'),
+                    mes: moment(deuda.ultimo_periodo).format('MMMM'),
                     fecha_reprote: "",
                     deuda:[],
                     linea_credito: [],
