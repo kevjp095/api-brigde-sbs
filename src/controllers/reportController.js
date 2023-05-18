@@ -74,7 +74,7 @@ const formatReportJson = (response) => {
         });
 
         if (hasNullReporteCabecera) {
-            return response; // Retorna response si se encontró alguna deuda con reporte_cabecera null
+            return newJson; // Retorna response si se encontró alguna deuda con reporte_cabecera null
         }
 
         return newJson;
