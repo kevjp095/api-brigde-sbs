@@ -61,8 +61,9 @@ const formatReportJson = (response) => {
             if (deuda.reporte_cabecera === null) {
                 hasNullReporteCabecera = true; 
                 const newData = {
-                    anio: "",
-                    mes: "",
+                    ultimo_periodo: deuda.ultimo_periodo,
+                    anio:  moment(deuda.ultimo_periodo).format('YYYY'),
+                    mes: moment(deuda.ultimo_periodo).format('MM'),
                     fecha_reprote: "",
                     deuda:[],
                     linea_credito: [],
