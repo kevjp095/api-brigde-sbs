@@ -64,8 +64,8 @@ const formatReportJson = (response) => {
                     anio: "0",
                     mes: "0",
                     fecha_reprote: moment().format('MMMM YYYY'),
-                    deuda:"0",
-                    linea_credito: "0",
+                    deuda:[],
+                    linea_credito: [],
                 };
     
                 newJson.parameters.detalle.push(newData);
