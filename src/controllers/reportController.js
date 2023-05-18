@@ -60,6 +60,16 @@ const formatReportJson = (response) => {
             // si el services no tiene deuda
             if (deuda.reporte_cabecera === null) {
                 hasNullReporteCabecera = true; 
+                const newData = {
+                    anio: "0",
+                    mes: "0",
+                    fecha_reprote: moment().format('MMMM YYYY'),
+                    deuda:"0",
+                    linea_credito: "0",
+                };
+    
+                newJson.parameters.detalle.push(newData);
+                
                 return; // Salta a la siguiente iteración del bucle forEach
             }
             const newData = {
