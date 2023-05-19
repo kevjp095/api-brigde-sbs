@@ -59,30 +59,37 @@ const formatReportJson = (response) => {
         response.result.lista_deudas.forEach((deuda) => {
             // si el services no tiene deuda
             if (deuda.reporte_cabecera === null) {
-                hasNullReporteCabecera = true; 
+                hasNullReporteCabecera = true;
                 const newData = {
                     ultimo_periodo: deuda.ultimo_periodo,
-                    anio:  moment(deuda.ultimo_periodo).format('YYYY'),
+                    anio: moment(deuda.ultimo_periodo).format('YYYY'),
                     mes: moment(deuda.ultimo_periodo).format('MMMM'),
-                    fecha_reprote: moment(deuda.ultimo_periodo).format('MMMM')+ " "+ moment(deuda.ultimo_periodo).format('YYYY'),
-                    deuda:[],
+                    fecha_reprote: moment(deuda.ultimo_periodo).format('MMMM') + " " + moment(deuda.ultimo_periodo).format('YYYY'),
+                    deuda: [],
                     linea_credito: [],
+                    cant_enity: 0
                 };
-    
+
                 newJson.parameters.detalle.push(newData);
-                
+
                 return; // Salta a la siguiente iteración del bucle forEach
             }
+            let cant_enity = deuda.lista_reporte_crediticio_detalle.length + deuda.lista_reporte_crediticio_saldo.length;
+
+            console.log(cant_enity)
+
             const newData = {
                 anio: deuda.reporte_cabecera.anio,
                 mes: deuda.reporte_cabecera.mes,
-                fecha_reprote: moment().month(deuda.reporte_cabecera.mes - 1).format('MMMM') +" "+ deuda.reporte_cabecera.anio,
+                fecha_reprote: moment().month(deuda.reporte_cabecera.mes - 1).format('MMMM') + " " + deuda.reporte_cabecera.anio,
                 deuda: deuda.lista_reporte_crediticio_detalle,
-                linea_credito: deuda.lista_reporte_crediticio_saldo
+                linea_credito: deuda.lista_reporte_crediticio_saldo,
+                cant_enity: cant_enity
             };
 
             newJson.parameters.detalle.push(newData);
         });
+
 
         if (hasNullReporteCabecera) {
             return newJson; // Retorna response si se encontró alguna deuda con reporte_cabecera null
