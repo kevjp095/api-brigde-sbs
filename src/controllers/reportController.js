@@ -67,16 +67,16 @@ const formatReportJson = (response) => {
                     fecha_reprote: moment(deuda.ultimo_periodo).format('MMMM') + " " + moment(deuda.ultimo_periodo).format('YYYY'),
                     deuda: [],
                     linea_credito: [],
-                    cant_enity: 0
+                    cant_entity: 0
                 };
 
                 newJson.parameters.detalle.push(newData);
 
                 return; // Salta a la siguiente iteración del bucle forEach
             }
-            let cant_enity = deuda.lista_reporte_crediticio_detalle.length + deuda.lista_reporte_crediticio_saldo.length;
+            let cant_entity = deuda.lista_reporte_crediticio_detalle.length + deuda.lista_reporte_crediticio_saldo.length;
 
-            console.log(cant_enity)
+            console.log(cant_entity)
 
             const newData = {
                 anio: deuda.reporte_cabecera.anio,
@@ -84,7 +84,7 @@ const formatReportJson = (response) => {
                 fecha_reprote: moment().month(deuda.reporte_cabecera.mes - 1).format('MMMM') + " " + deuda.reporte_cabecera.anio,
                 deuda: deuda.lista_reporte_crediticio_detalle,
                 linea_credito: deuda.lista_reporte_crediticio_saldo,
-                cant_enity: cant_enity
+                cant_entity: cant_entity
             };
 
             newJson.parameters.detalle.push(newData);
