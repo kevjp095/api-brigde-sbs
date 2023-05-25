@@ -46,11 +46,20 @@ const formatReportJson = (response) => {
         const newJson = {
             reportname: "testreport",
             parameters: {
+                tipdoc:'',
                 persona_natural: {},
                 detalle: []
             }
         };
 
+        if (response.result.persona_natural.des_tipo_documento === 'DNI' ||
+            response.result.persona_natural.des_tipo_documento === 'CARNET DE EXTRANJERIA' ||
+            response.result.persona_natural.des_tipo_documento === 'PASAPORTE') {
+            newJson.parameters.tipdoc = 'NATURAL'
+        }
+        if(response.result.persona_natural.des_tipo_documento === 'RUC' ){
+            newJson.parameters.tipdoc = 'JURIDICA'
+        }
         const persona_natural = response.result.persona_natural;
         newJson.parameters.persona_natural = persona_natural;
 
