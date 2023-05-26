@@ -64,8 +64,10 @@ const formatReportJson = (response) => {
         if (newJson.parameters.persona_natural.des_tipo_documento === 'RUC') {
             newJson.parameters.persona_natural.des_tipo_documento = 'JURIDICA'
         }
+        if(newJson.parameters.persona_natural.tipo_documento === '1'){
+            newJson.parameters.persona_natural.tipo_documento='DNI'
+        }
 
-        
         let hasNullReporteCabecera = false;
 
         response.result.lista_deudas.forEach((deuda) => {
