@@ -46,23 +46,26 @@ const formatReportJson = (response) => {
         const newJson = {
             reportname: "testreport",
             parameters: {
-                tipdoc:'',
                 persona_natural: {},
                 detalle: []
             }
         };
 
-        if (response.result.persona_natural.des_tipo_documento === 'DNI' ||
-            response.result.persona_natural.des_tipo_documento === 'CARNET DE EXTRANJERIA' ||
-            response.result.persona_natural.des_tipo_documento === 'PASAPORTE') {
-            newJson.parameters.tipdoc = 'NATURAL'
-        }
-        if(response.result.persona_natural.des_tipo_documento === 'RUC' ){
-            newJson.parameters.tipdoc = 'JURIDICA'
-        }
+
         const persona_natural = response.result.persona_natural;
         newJson.parameters.persona_natural = persona_natural;
 
+        //Variable des_tipo_doc =  Natural /Juridico
+        if (newJson.parameters.persona_natural.des_tipo_documento === 'DNI' ||
+            newJson.parameters.persona_natural.des_tipo_documento === 'CARNET DE EXTRANJERIA' ||
+            newJson.parameters.persona_natural.des_tipo_documento === 'PASAPORTE') {
+            newJson.parameters.persona_natural.des_tipo_documento = 'NATURAL'
+        }
+        if (newJson.parameters.persona_natural.des_tipo_documento === 'RUC') {
+            newJson.parameters.persona_natural.des_tipo_documento = 'JURIDICA'
+        }
+
+        
         let hasNullReporteCabecera = false;
 
         response.result.lista_deudas.forEach((deuda) => {
