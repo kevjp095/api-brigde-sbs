@@ -93,7 +93,7 @@ const formatReportJson = (response) => {
             const newData = {
                 anio: deuda.reporte_cabecera.anio,
                 mes: deuda.reporte_cabecera.mes,
-                fecha_reprote: moment().month(deuda.reporte_cabecera.mes - 1).format('MMMM') + " " + deuda.reporte_cabecera.anio,
+                fecha_reprote: moment(deuda.ultimo_periodo).format('MMMM YYYY').replace(/^\w/, (c) => c.toUpperCase()),
                 deuda: deuda.lista_reporte_crediticio_detalle,
                 linea_credito: deuda.lista_reporte_crediticio_saldo,
                 cant_entity: cant_entity
