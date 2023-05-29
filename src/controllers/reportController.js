@@ -78,7 +78,7 @@ const formatReportJson = (response) => {
                     ultimo_periodo: deuda.ultimo_periodo,
                     anio: moment(deuda.ultimo_periodo).format('YYYY'),
                     mes: moment(deuda.ultimo_periodo).format('MMMM'),
-                    fecha_reprote: moment(deuda.ultimo_periodo).format('MMMM') + " " + moment(deuda.ultimo_periodo).format('YYYY'),
+                    fecha_reprote: moment(deuda.ultimo_periodo).format('MMMM YYYY').replace(/^\w/, (c) => c.toUpperCase()),
                     deuda: [],
                     linea_credito: [],
                     cant_entity: 0
@@ -89,8 +89,6 @@ const formatReportJson = (response) => {
                 return; // Salta a la siguiente iteración del bucle forEach
             }
             let cant_entity = deuda.lista_reporte_crediticio_detalle.length + deuda.lista_reporte_crediticio_saldo.length;
-
-            console.log(cant_entity)
 
             const newData = {
                 anio: deuda.reporte_cabecera.anio,
