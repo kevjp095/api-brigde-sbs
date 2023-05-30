@@ -59,10 +59,10 @@ const formatReportJson = (response) => {
         if (newJson.parameters.persona_natural.des_tipo_documento === 'DNI' ||
             newJson.parameters.persona_natural.des_tipo_documento === 'CARNET DE EXTRANJERIA' ||
             newJson.parameters.persona_natural.des_tipo_documento === 'PASAPORTE') {
-            newJson.parameters.persona_natural.des_tipo_documento = 'NATURAL'
+            newJson.parameters.persona_natural.des_tipo_documento = 'Natural'
         }
         if (newJson.parameters.persona_natural.des_tipo_documento === 'RUC') {
-            newJson.parameters.persona_natural.des_tipo_documento = 'JURIDICA'
+            newJson.parameters.persona_natural.des_tipo_documento = 'Jurídico'
         }
         if(newJson.parameters.persona_natural.tipo_documento === '1'){
             newJson.parameters.persona_natural.tipo_documento='DNI'
