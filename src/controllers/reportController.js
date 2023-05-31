@@ -55,17 +55,27 @@ const formatReportJson = (response) => {
         const persona_natural = response.result.persona_natural;
         newJson.parameters.persona_natural = persona_natural;
 
-        //Variable des_tipo_doc =  Natural /Juridico
-        if (newJson.parameters.persona_natural.des_tipo_documento === 'DNI' ||
-            newJson.parameters.persona_natural.des_tipo_documento === 'CARNET DE EXTRANJERIA' ||
-            newJson.parameters.persona_natural.des_tipo_documento === 'PASAPORTE') {
-            newJson.parameters.persona_natural.des_tipo_documento = 'Natural'
-        }
+        //Variable des_tipo_doc =  Natural
         if (newJson.parameters.persona_natural.des_tipo_documento === 'RUC') {
             newJson.parameters.persona_natural.des_tipo_documento = 'Jurídico'
         }
-        if(newJson.parameters.persona_natural.tipo_documento === '1'){
-            newJson.parameters.persona_natural.tipo_documento='DNI'
+        if (newJson.parameters.persona_natural.tipo_documento === '1') {
+            newJson.parameters.persona_natural.tipo_documento = 'DNI'
+        }
+        if (newJson.parameters.persona_natural.tipo_documento === '2') {
+            newJson.parameters.persona_natural.tipo_documento = 'Carnet de extranjería'
+        }
+        if (newJson.parameters.persona_natural.tipo_documento === '5') {
+            newJson.parameters.persona_natural.tipo_documento = 'Pasaporte'
+        }
+        if (newJson.parameters.persona_natural.tipo_documento === '8') {
+            newJson.parameters.persona_natural.tipo_documento = 'Carnet de permiso temporal permanencia'
+        }
+
+        if (newJson.parameters.persona_natural.des_tipo_documento === 'DNI' ||
+            newJson.parameters.persona_natural.des_tipo_documento === 'Carnet de extranjería' ||
+            newJson.parameters.persona_natural.des_tipo_documento === 'Pasaporte') {
+            newJson.parameters.persona_natural.des_tipo_documento = 'Natural'
         }
 
         let hasNullReporteCabecera = false;
