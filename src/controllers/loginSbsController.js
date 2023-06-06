@@ -52,18 +52,17 @@ const getLogin = async (req, res, next) => {
             error.code = 'SBS_ERROR_AUTHENTICATION';
             return next(error);
         }
-        
 
         let email_user = getEmail(responseSbs);
         let fec_nac = getFecNac(responseSbs);
         let full_name = getFullName(responseSbs);
-        let fec_login = moment(getDate(responseSbs), 'ddd, DD MMM YYYY HH:mm:ss [GMT]');
+        let fec_login = getDate(responseSbs);
 
         valuesLaraigo.variables.accion_landing = 'LOGINSUCCESS';
         valuesLaraigo.variables.email = email_user;
         valuesLaraigo.variables.fec_nac= fec_nac;
         valuesLaraigo.variables.full_name= full_name;
-        valuesLaraigo.variables.fec_login= fec_login.format('DD/MM/YYYY HH:mm:ss A');
+        valuesLaraigo.variables.fec_login= moment(fec_login, 'M/D/YYYY, H:mm:ss').format('DD/MM/YYYY HH:mm:ss A');
         console.log(valuesLaraigo)
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
@@ -167,7 +166,11 @@ const getDate = (response) => {
             break;
         }
     }
-    return date_sbs;
+    const fechaHoraUTC = new Date(date_sbs);
+    const opciones = { timeZone: 'America/Lima' };
+    const fechaHoraLocal = fechaHoraUTC.toLocaleString('es-PE', opciones);  
+
+    return fechaHoraLocal;
 }
 
 export default {
