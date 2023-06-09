@@ -46,8 +46,6 @@ const getLogin = async (req, res, next) => {
             }
         }
 
-
-
         if (valuesLaraigo.variables.accion_landing === 'FORGOT_PASSWORD' || valuesLaraigo.variables.accion_landing === 'MANYATTEMPTS') {
 
             const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
@@ -94,6 +92,8 @@ const getLogin = async (req, res, next) => {
             return next(error);
         }
         */
+       console.log(responseSbs)
+       console.log(recaptcha_score)
         res.status(201).send({ result: responseSbs.is_success, recaptcha_score: recaptcha_score });
 
     } catch (error) {

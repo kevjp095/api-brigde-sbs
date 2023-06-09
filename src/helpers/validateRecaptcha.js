@@ -3,7 +3,9 @@ const URL_RECAPTCHA = "https://apix.laraigo.com/api/check/recaptcha";
 export async function validateRecaptcha(token) {
     try {
         let res_recaptcha = await recaptcha(token);
+        
         let recaptcha_object = await res_recaptcha.json();
+
         if (!recaptcha_object.success) {
             throw new Error("ValidateRecaptcha",recaptcha_object);
         }
