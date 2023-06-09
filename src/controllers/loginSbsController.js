@@ -3,43 +3,55 @@ import crypto from 'crypto';
 import formidable from 'formidable';
 import sbsService from '../services/sbsService.js'
 import laraigoService from '../services/laraigoService.js'
-import {decryptAuth} from '../helpers/decryptAuth.js';
+import { decryptAuth } from '../helpers/decryptAuth.js';
+import { validateRecaptcha } from '../helpers/validateRecaptcha.js';
 
 const getLogin = async (req, res, next) => {
 
     const token = req.token;
     const { body } = req;
 
-    const data = {
-        tipo_documento: body.tipo_documento,
-        numero_documento: decryptAuth(body.numero_documento),
-        contrasenia: decryptAuth(body.contrasenia)
-    }
-
-    const [corpid, orgid, conversationid, personid] = body.key.split('-');
-    
-    const valuesLaraigo = {
-        corpid: corpid,
-        orgid: orgid,
-        conversationid: conversationid,
-        personid: personid,
-        variables: {
-            accion_landing: body.event,
-            tipo_doc: body.tipo_documento,
-            num_doc: body.numero_documento,
-            email: "",
-            fec_nac: "",
-            full_name:"",
-            fec_login: ""
-        }
-    }
-
     try {
+        const recaptcha_score = await validateRecaptcha(body.token_recaptcha);
+
+        console.log("getLogin:", recaptcha_score)
+        if(!recaptcha_score){
+            const error = new Error("recaptcha_score does not exist");
+            error.statusCode = 500;
+            error.code = 'recaptcha_error';
+            return next(error);
+        }
+
+        const data = {
+            tipo_documento: body.tipo_documento,
+            numero_documento: decryptAuth(body.numero_documento),
+            contrasenia: decryptAuth(body.contrasenia)
+        }
+
+        const [corpid, orgid, conversationid, personid] = body.key.split('-');
+
+        const valuesLaraigo = {
+            corpid: corpid,
+            orgid: orgid,
+            conversationid: conversationid,
+            personid: personid,
+            variables: {
+                accion_landing: body.event,
+                tipo_doc: body.tipo_documento,
+                num_doc: body.numero_documento,
+                email: "",
+                fec_nac: "",
+                full_name: "",
+                fec_login: ""
+            }
+        }
+
+
 
         if (valuesLaraigo.variables.accion_landing === 'FORGOT_PASSWORD' || valuesLaraigo.variables.accion_landing === 'MANYATTEMPTS') {
 
             const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
-            
+
             if (responseLaraigo.Success === false) {
                 const error = new Error("ERROR_AUTHENTICATION | EVENT_" + valuesLaraigo.event);
                 error.is_succ.ess = false;
@@ -67,12 +79,12 @@ const getLogin = async (req, res, next) => {
 
         valuesLaraigo.variables.accion_landing = 'LOGINSUCCESS';
         valuesLaraigo.variables.email = email_user;
-        valuesLaraigo.variables.fec_nac= fec_nac;
-        valuesLaraigo.variables.full_name= full_name;
-        valuesLaraigo.variables.fec_login= moment(fec_login, 'M/D/YYYY, H:mm:ss').format('DD/MM/YYYY HH:mm:ss A');
+        valuesLaraigo.variables.fec_nac = fec_nac;
+        valuesLaraigo.variables.full_name = full_name;
+        valuesLaraigo.variables.fec_login = moment(fec_login, 'M/D/YYYY, H:mm:ss').format('DD/MM/YYYY HH:mm:ss A');
 
         console.log(valuesLaraigo)
-        const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
+        /*const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
         if (responseLaraigo.Success === false) {
             const error = new Error("ERROR KEY APILARAIGO:" + responseLaraigo.Msg);
@@ -81,10 +93,9 @@ const getLogin = async (req, res, next) => {
             error.result = responseLaraigo.Result
             return next(error);
         }
+        */
+        res.status(201).send({ result: responseSbs.is_success, recaptcha_score: recaptcha_score });
 
-        console.log(responseSbs)
-        res.status(201).send({ result: responseSbs.is_success });
-        
     } catch (error) {
         next(error);
     }
@@ -176,7 +187,7 @@ const getDate = (response) => {
     }
     const fechaHoraUTC = new Date(date_sbs);
     const opciones = { timeZone: 'America/Lima' };
-    const fechaHoraLocal = fechaHoraUTC.toLocaleString('es-PE', opciones);  
+    const fechaHoraLocal = fechaHoraUTC.toLocaleString('es-PE', opciones);
 
     return fechaHoraLocal;
 }
