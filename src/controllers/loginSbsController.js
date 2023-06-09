@@ -84,7 +84,7 @@ const getLogin = async (req, res, next) => {
 
         //console.log(valuesLaraigo)
         console.log(recaptcha_score)
-        /*
+        
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
         if (responseLaraigo.Success === false) {
@@ -95,7 +95,7 @@ const getLogin = async (req, res, next) => {
             return next(error);
         }
         
-*/
+
         //res.status(201).send({ result: responseSbs.is_success });
         res.status(201).send({ result: responseSbs.is_success, score: recaptcha_score });
 
