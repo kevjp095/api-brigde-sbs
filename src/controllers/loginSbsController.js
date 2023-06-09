@@ -1,4 +1,5 @@
 import moment from 'moment';
+import crypto from 'crypto';
 import formidable from 'formidable';
 import sbsService from '../services/sbsService.js'
 import laraigoService from '../services/laraigoService.js'
@@ -15,6 +16,7 @@ const getLogin = async (req, res, next) => {
     }
 
     const [corpid, orgid, conversationid, personid] = body.key.split('-');
+    
     const valuesLaraigo = {
         corpid: corpid,
         orgid: orgid,
@@ -32,8 +34,11 @@ const getLogin = async (req, res, next) => {
     }
 
     try {
+
         if (valuesLaraigo.variables.accion_landing === 'FORGOT_PASSWORD' || valuesLaraigo.variables.accion_landing === 'MANYATTEMPTS') {
+
             const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
+            
             if (responseLaraigo.Success === false) {
                 const error = new Error("ERROR_AUTHENTICATION | EVENT_" + valuesLaraigo.event);
                 error.is_succ.ess = false;
@@ -53,6 +58,7 @@ const getLogin = async (req, res, next) => {
             return next(error);
         }
 
+
         let email_user = getEmail(responseSbs);
         let fec_nac = getFecNac(responseSbs);
         let full_name = getFullName(responseSbs);
@@ -63,9 +69,9 @@ const getLogin = async (req, res, next) => {
         valuesLaraigo.variables.fec_nac= fec_nac;
         valuesLaraigo.variables.full_name= full_name;
         valuesLaraigo.variables.fec_login= moment(fec_login, 'M/D/YYYY, H:mm:ss').format('DD/MM/YYYY HH:mm:ss A');
+
         console.log(valuesLaraigo)
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
-
 
         if (responseLaraigo.Success === false) {
             const error = new Error("ERROR KEY APILARAIGO:" + responseLaraigo.Msg);
@@ -75,7 +81,8 @@ const getLogin = async (req, res, next) => {
             return next(error);
         }
 
-        res.status(201).send({ result: responseSbs });
+        console.log(responseSbs)
+        res.status(201).send({ result: responseSbs.is_success });
         
     } catch (error) {
         next(error);
