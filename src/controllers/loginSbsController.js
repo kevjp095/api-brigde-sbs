@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import formidable from 'formidable';
 import sbsService from '../services/sbsService.js'
 import laraigoService from '../services/laraigoService.js'
+import decryptPassword from '../helpers/decryptPassword.js';
 
 const getLogin = async (req, res, next) => {
 
@@ -12,7 +13,7 @@ const getLogin = async (req, res, next) => {
     const data = {
         tipo_documento: body.tipo_documento,
         numero_documento: body.numero_documento,
-        contrasenia: body.contrasenia
+        contrasenia: decryptPassword(body.contrasenia)
     }
 
     const [corpid, orgid, conversationid, personid] = body.key.split('-');
