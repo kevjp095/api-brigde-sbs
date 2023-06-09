@@ -7,30 +7,35 @@ export async function validateRecaptcha(token) {
         let recaptcha_object = await res_recaptcha.json();
 
         if (!recaptcha_object.success) {
-            throw new Error("ValidateRecaptcha",recaptcha_object);
+            throw new Error(recaptcha_object);
         }
         return recaptcha_object.score;
 
     } catch (error) {
-        throw new Error("ValidateRecaptcha",error);
+        throw new Error(error);
     }
 }
 
 
 async function recaptcha(token) {
-    let request_recaptcha = {
-        response: token
-    };
-
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(request_recaptcha)
+    try {
+        let request_recaptcha = {
+            response: token
+        };
+    
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(request_recaptcha)
+        }
+    
+        let response = await fetch(URL_RECAPTCHA, options);
+    
+        return response;
+    } catch (error) {
+        throw new Error(error);
     }
 
-    let response = await fetch(URL_RECAPTCHA, options);
-
-    return response;
 }
