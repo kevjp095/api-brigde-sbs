@@ -16,6 +16,7 @@ export async function validateRecaptcha(token) {
     }
 }
 
+
 async function recaptcha(token) {
     let request_recaptcha = {
         response: token
