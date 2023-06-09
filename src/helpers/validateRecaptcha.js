@@ -1,11 +1,10 @@
+import axios from 'axios';
 const URL_RECAPTCHA = "https://apix.laraigo.com/api/check/recaptcha";
 
 export async function validateRecaptcha(token) {
     try {
-        let res_recaptcha = await recaptcha(token);
-        
-        let recaptcha_object = await res_recaptcha.json();
-
+        let recaptcha_object = await recaptcha(token);
+        console.log(recaptcha_object)
         if (!recaptcha_object.success) {
             throw new Error(recaptcha_object);
         }
@@ -19,23 +18,22 @@ export async function validateRecaptcha(token) {
 
 async function recaptcha(token) {
     try {
-        let request_recaptcha = {
-            response: token
-        };
-    
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(request_recaptcha)
-        }
-    
-        let response = await fetch(URL_RECAPTCHA, options);
-    
-        return response;
+      const request_recaptcha = {
+        response: token
+      };
+  
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(request_recaptcha),
+        url: URL_RECAPTCHA
+      };
+  
+      const response = await axios(options);
+      return response.data;
     } catch (error) {
-        throw new Error(error);
+      throw new Error(error);
     }
-
-}
+  }
