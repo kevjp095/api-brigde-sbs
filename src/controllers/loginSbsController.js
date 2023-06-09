@@ -82,7 +82,7 @@ const getLogin = async (req, res, next) => {
         valuesLaraigo.variables.fec_login = moment(fec_login, 'M/D/YYYY, H:mm:ss').format('DD/MM/YYYY HH:mm:ss A');
 
         console.log(valuesLaraigo)
-        /*const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
+        const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
         if (responseLaraigo.Success === false) {
             const error = new Error("ERROR KEY APILARAIGO:" + responseLaraigo.Msg);
@@ -91,7 +91,7 @@ const getLogin = async (req, res, next) => {
             error.result = responseLaraigo.Result
             return next(error);
         }
-        */
+        
        console.log(responseSbs)
        console.log(recaptcha_score)
         res.status(201).send({ result: responseSbs.is_success, recaptcha_score: recaptcha_score });
