@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import formidable from 'formidable';
 import sbsService from '../services/sbsService.js'
 import laraigoService from '../services/laraigoService.js'
-import decryptPassword from '../helpers/decryptPassword.js';
+import {decryptPassword, decryptUser} from '../helpers/decryptPassword.js';
 
 const getLogin = async (req, res, next) => {
 
@@ -12,7 +12,7 @@ const getLogin = async (req, res, next) => {
 
     const data = {
         tipo_documento: body.tipo_documento,
-        numero_documento: body.numero_documento,
+        numero_documento: decryptUser(body.numero_documento),
         contrasenia: decryptPassword(body.contrasenia)
     }
 
