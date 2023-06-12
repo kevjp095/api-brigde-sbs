@@ -9,7 +9,7 @@ const router = express.Router();
 router.use(authorize);
 
 router
-    .post("/",loginSbsController.getLogin)
+    .post("/",validateLogin,loginSbsController.getLogin)
     .post("/close-tab",loginSbsController.closeTab)
 
 export default router;

@@ -14,15 +14,10 @@ const getLogin = async (req, res, next) => {
     try {
         const recaptcha_score = await validateRecaptcha(body.token_recaptcha);
 
-        console.log("getLogin:", recaptcha_score)
-
-        /*if(!recaptcha_score){
-            const error = new Error("recaptcha_score does not exist");
-            error.statusCode = 500;
-            error.code = 'recaptcha_error';
-            return next(error);
+        if (recaptcha_score.success === false) {
+            next(recaptcha_score);
         }
-*/
+
         const data = {
             tipo_documento: body.tipo_documento,
             numero_documento: decryptAuth(body.numero_documento),
@@ -84,7 +79,7 @@ const getLogin = async (req, res, next) => {
 
         //console.log(valuesLaraigo)
         console.log(recaptcha_score)
-        
+
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
         if (responseLaraigo.Success === false) {
@@ -94,7 +89,7 @@ const getLogin = async (req, res, next) => {
             error.result = responseLaraigo.Result
             return next(error);
         }
-        
+
 
         //res.status(201).send({ result: responseSbs.is_success });
         res.status(201).send({ result: responseSbs.is_success, score: recaptcha_score });
