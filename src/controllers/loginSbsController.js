@@ -18,10 +18,13 @@ const getLogin = async (req, res, next) => {
             next(recaptcha_score);
         }
 
+        let numero_document = decryptAuth(body.numero_documento);
+        let password = decryptAuth(body.contrasenia);
+
         const data = {
             tipo_documento: body.tipo_documento,
-            numero_documento: decryptAuth(body.numero_documento),
-            contrasenia: decryptAuth(body.contrasenia)
+            numero_documento: numero_document,
+            contrasenia: password
         }
 
         const [corpid, orgid, conversationid, personid] = body.key.split('-');
@@ -34,7 +37,7 @@ const getLogin = async (req, res, next) => {
             variables: {
                 accion_landing: body.event,
                 tipo_doc: body.tipo_documento,
-                num_doc: body.numero_documento,
+                num_doc: numero_document,
                 email: "",
                 fec_nac: "",
                 full_name: "",
