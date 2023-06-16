@@ -17,6 +17,7 @@ const getLogin = async (req, res, next) => {
         if (recaptcha_score.success === false) {
             next(recaptcha_score);
         }
+        
 
         let numero_document = decryptAuth(body.numero_documento);
         let password = decryptAuth(body.contrasenia);
@@ -74,14 +75,17 @@ const getLogin = async (req, res, next) => {
         let full_name = getFullName(responseSbs);
         let fec_login = getDate(responseSbs);
 
+        console.log(fec_login)
+
         valuesLaraigo.variables.accion_landing = 'LOGINSUCCESS';
         valuesLaraigo.variables.email = email_user;
         valuesLaraigo.variables.fec_nac = fec_nac;
         valuesLaraigo.variables.full_name = full_name;
-        valuesLaraigo.variables.fec_login = moment(fec_login, 'M/D/YYYY, H:mm:ss').format('DD/MM/YYYY HH:mm:ss A');
+        valuesLaraigo.variables.fec_login = moment(fec_login, 'D/M/YYYY, H:mm:ss').format('DD/MM/YYYY HH:mm:ss A');
 
-        //console.log(valuesLaraigo)
-        console.log(recaptcha_score)
+
+        console.log(valuesLaraigo)
+        //console.log(recaptcha_score)
 
         const responseLaraigo = await laraigoService.sendValues(valuesLaraigo)
 
